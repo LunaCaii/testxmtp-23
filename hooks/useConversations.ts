@@ -144,24 +144,21 @@ export const useConversations = () => {
     [client],
   ) // Added client to dependencies
 
-  const newDmWithIdentifier = useCallback(
-    async (identifier: Identifier) => {
-      if (!client) return undefined
+  const newDmWithIdentifier = async (identifier: Identifier) => {
+    if (!client) return undefined
+    setLoading(true);
 
-      setLoading(true)
-
-      try {
-        const conversation = await client.conversations.newDmWithIdentifier(identifier)
-        return conversation
-      } finally {
-        setLoading(false)
-      }
-    },
-    [client],
-  ) // Added client to dependencies
+    try {
+      const conversation =
+        await client.conversations.newDmWithIdentifier(identifier);
+      return conversation;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const stream = useCallback(async () => {
-    const noop = () => {}
+    const noop = () => { }
     if (!client) {
       return noop
     }

@@ -1,93 +1,279 @@
-"use client"
+// 'use client'
 
-import { useState } from "react"
-import { useAccount } from "wagmi"
-import { ConnectWallet } from "@/components/connect-wallet"
-import { FriendsList } from "@/components/friends-list"
-import { AddFriend } from "@/components/add-friend"
-import { UserProfile } from "@/components/user-profile"
-import { IPFSStatus } from "@/components/ipfs-status"
-import { MobileLayout } from "@/components/mobile-layout"
-import { Button } from "@/components/ui/button"
-import { Users, MessageCircle, UserPlus, Settings } from "lucide-react"
-import { NetworkInfo } from "@/components/network-info"
-import { useMobile } from "@/hooks/use-mobile"
-import { useRouter } from "next/navigation"
+// import { useState } from 'react'
+// import { useAccount } from 'wagmi'
+// import { ConnectWallet } from '@/components/connect-wallet'
+// import { FriendsList } from '@/components/friends-list'
+// import { AddFriend } from '@/components/add-friend'
+// import { UserProfile } from '@/components/user-profile'
+// import { IPFSStatus } from '@/components/ipfs-status'
+// import { MobileLayout } from '@/components/mobile-layout'
+// import { Button } from '@/components/ui/button'
+// import { Users, MessageCircle, UserPlus, Settings } from 'lucide-react'
+// import { NetworkInfo } from '@/components/network-info'
+// import { useMobile } from '@/hooks/use-mobile'
+// import { useRouter } from 'next/navigation'
+// import { useConversations } from '@/hooks/useConversations'
+// import { useConnectXmtp } from '@/hooks/useConnectXmtp'
 
-type View = "friends" | "add-friend" | "profile"
+// type View = 'friends' | 'add-friend' | 'profile'
+
+// export function ChatApp() {
+//   const { address } = useAccount()
+//   const isMobile = useMobile()
+//   const [currentView, setCurrentView] = useState<View>('friends')
+//   const router = useRouter()
+//   const { client: xmtpClient } = useConnectXmtp()
+//   const { conversations, newDm } = useConversations() // 获取 conversations 和 newDm
+
+//   const handleStartChat = async (friendAddress: string) => {
+//     console.log(address, 'address')
+
+//     if (!xmtpClient) return
+//     const inboxId = await xmtpClient.findInboxIdByIdentifier({
+//       identifier: friendAddress.toLowerCase(),
+//       identifierKind: 'Ethereum',
+//     })
+//     console.log(inboxId, 'inboxId')
+//     // 尝试查找现有会话
+//     // let conversation = conversations.find(
+//     //   (convo) => convo.peerAddress.toLowerCase() === friendAddress.toLowerCase()
+//     // )
+
+//     // // 如果没有找到会话，则创建新的 DM
+//     // if (!conversation) {
+//     //   try {
+//     //     conversation = await newDm(friendAddress)
+//     //     if (!conversation) {
+//     //       console.error('无法创建新会话')
+//     //       return
+//     //     }
+//     //   } catch (error) {
+//     //     console.error('创建新会话失败:', error)
+//     //     return
+//     //   }
+//     // }
+
+//     // // 导航到新的动态路由，使用 conversation.id
+//     // router.push(`/conversations/${conversation.id}`)
+//   }
+
+//   const sidebar = (
+//     <div className='bg-white h-full flex flex-col'>
+//       {/* Header */}
+//       <div className='p-4 border-b border-gray-200'>
+//         <div className='flex items-center justify-between mb-4'>
+//           <h1 className='text-xl font-bold text-gray-900'>聊天DApp</h1>
+//           {!isMobile && <ConnectWallet />}
+//         </div>
+
+//         {/* Network and Service Status */}
+//         <div className='space-y-2 mb-4'>
+//           <NetworkInfo />
+//           <div className='flex justify-center space-x-2'>
+//             <IPFSStatus />
+//           </div>
+//         </div>
+
+//         {/* Navigation Buttons */}
+//         <div className='grid grid-cols-2 gap-2'>
+//           <Button
+//             variant={currentView === 'friends' ? 'default' : 'outline'}
+//             size='sm'
+//             onClick={() => setCurrentView('friends')}
+//             className='flex items-center gap-2'
+//           >
+//             <Users className='h-4 w-4' />
+//             好友
+//           </Button>
+//           <Button
+//             variant={currentView === 'add-friend' ? 'default' : 'outline'}
+//             size='sm'
+//             onClick={() => setCurrentView('add-friend')}
+//             className='flex items-center gap-2'
+//           >
+//             <UserPlus className='h-4 w-4' />
+//             添加
+//           </Button>
+//         </div>
+//       </div>
+
+//       {/* Content Area */}
+//       <div className='flex-1 overflow-hidden'>
+//         {currentView === 'friends' && (
+//           <FriendsList onStartChat={handleStartChat} />
+//         )}
+//         {currentView === 'add-friend' && <AddFriend />}
+//         {currentView === 'profile' && <UserProfile />}
+//       </div>
+
+//       {/* Footer */}
+//       <div className='p-4 border-t border-gray-200'>
+//         {isMobile && (
+//           <div className='mb-3'>
+//             <ConnectWallet />
+//           </div>
+//         )}
+//         <Button
+//           variant={currentView === 'profile' ? 'default' : 'outline'}
+//           size='sm'
+//           onClick={() => setCurrentView('profile')}
+//           className='w-full flex items-center gap-2'
+//         >
+//           <Settings className='h-4 w-4' />
+//           个人设置
+//         </Button>
+//       </div>
+//     </div>
+//   )
+
+//   const main = (
+//     <div className='flex-1 flex items-center justify-center bg-gray-50'>
+//       <div className='text-center text-gray-500 px-4'>
+//         <MessageCircle className='h-16 w-16 mx-auto mb-4 text-gray-300' />
+//         <h3 className='text-lg font-medium mb-2'>选择一个好友开始聊天</h3>
+//         <p className='text-sm'>从好友列表中选择一个好友开始对话</p>
+//         <p className='text-xs mt-2 text-gray-400'>
+//           支持发送图片和视频，存储在IPFS
+//         </p>
+//       </div>
+//     </div>
+//   )
+
+//   return <MobileLayout sidebar={sidebar} main={main} />
+// }
+
+'use client'
+
+import { useState } from 'react'
+import { useAccount } from 'wagmi'
+import { ConnectWallet } from '@/components/connect-wallet'
+import { FriendsList } from '@/components/friends-list'
+import { AddFriend } from '@/components/add-friend'
+import { UserProfile } from '@/components/user-profile'
+import { IPFSStatus } from '@/components/ipfs-status'
+import { MobileLayout } from '@/components/mobile-layout'
+import { Button } from '@/components/ui/button'
+import { Users, MessageCircle, UserPlus, Settings } from 'lucide-react'
+import { NetworkInfo } from '@/components/network-info'
+import { useMobile } from '@/hooks/use-mobile'
+import { useRouter } from 'next/navigation'
+import { useConversations } from '@/hooks/useConversations'
+import { useXMTP } from '@/contexts/XMTPContext' // 导入 useXMTP
+import { useToast } from '@/hooks/use-toast' // 导入 useToast
+
+type View = 'friends' | 'add-friend' | 'profile'
 
 export function ChatApp() {
   const { address } = useAccount()
   const isMobile = useMobile()
-  const [currentView, setCurrentView] = useState<View>("friends")
+  const [currentView, setCurrentView] = useState<View>('friends')
   const router = useRouter()
+  const { conversations, newDm } = useConversations()
+  const { client: xmtpClient } = useXMTP() // 获取 XMTP 客户端实例
+  const { toast } = useToast() // 初始化 toast
 
-  const handleStartChat = (friendAddress: string) => {
-    // Navigate to dynamic route
-    router.push(`/conversations/${friendAddress}`)
+  const handleStartChat = async (friendAddress: string) => {
+    if (!xmtpClient) {
+      toast({
+        title: '错误',
+        description: 'XMTP 客户端未连接，请先连接钱包并等待XMTP初始化。',
+        variant: 'destructive',
+      })
+      return
+    }
+
+    try {
+      // 检查好友的 XMTP 服务是否可用
+      const inboxId = await xmtpClient.findInboxIdByIdentifier({
+        identifier: friendAddress.toLowerCase(),
+        identifierKind: 'Ethereum',
+      })
+
+      if (!inboxId) {
+        toast({
+          title: '无法聊天',
+          description: '该好友的XMTP服务不可用，无法开始会话。',
+          variant: 'destructive',
+        })
+        return // 阻止跳转
+      } else {
+        router.push(`/conversations/${inboxId}`)
+      }
+    } catch (error) {
+      console.error('检查好友XMTP状态失败:', error)
+      toast({
+        title: '错误',
+        description: '检查好友XMTP状态时发生错误。',
+        variant: 'destructive',
+      })
+      return
+    }
   }
 
   const sidebar = (
-    <div className="bg-white h-full flex flex-col">
+    <div className='bg-white h-full flex flex-col'>
       {/* Header */}
-      <div className="p-4 border-b border-gray-200">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-xl font-bold text-gray-900">聊天DApp</h1>
+      <div className='p-4 border-b border-gray-200'>
+        <div className='flex items-center justify-between mb-4'>
+          <h1 className='text-xl font-bold text-gray-900'>聊天DApp</h1>
           {!isMobile && <ConnectWallet />}
         </div>
 
         {/* Network and Service Status */}
-        <div className="space-y-2 mb-4">
+        <div className='space-y-2 mb-4'>
           <NetworkInfo />
-          <div className="flex justify-center space-x-2">
+          <div className='flex justify-center space-x-2'>
             <IPFSStatus />
           </div>
         </div>
 
         {/* Navigation Buttons */}
-        <div className="grid grid-cols-2 gap-2">
+        <div className='grid grid-cols-2 gap-2'>
           <Button
-            variant={currentView === "friends" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setCurrentView("friends")}
-            className="flex items-center gap-2"
+            variant={currentView === 'friends' ? 'default' : 'outline'}
+            size='sm'
+            onClick={() => setCurrentView('friends')}
+            className='flex items-center gap-2'
           >
-            <Users className="h-4 w-4" />
+            <Users className='h-4 w-4' />
             好友
           </Button>
           <Button
-            variant={currentView === "add-friend" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setCurrentView("add-friend")}
-            className="flex items-center gap-2"
+            variant={currentView === 'add-friend' ? 'default' : 'outline'}
+            size='sm'
+            onClick={() => setCurrentView('add-friend')}
+            className='flex items-center gap-2'
           >
-            <UserPlus className="h-4 w-4" />
+            <UserPlus className='h-4 w-4' />
             添加
           </Button>
         </div>
       </div>
 
       {/* Content Area */}
-      <div className="flex-1 overflow-hidden">
-        {currentView === "friends" && <FriendsList onStartChat={handleStartChat} />}
-        {currentView === "add-friend" && <AddFriend />}
-        {currentView === "profile" && <UserProfile />}
+      <div className='flex-1 overflow-hidden'>
+        {currentView === 'friends' && (
+          <FriendsList onStartChat={handleStartChat} />
+        )}
+        {currentView === 'add-friend' && <AddFriend />}
+        {currentView === 'profile' && <UserProfile />}
       </div>
 
       {/* Footer */}
-      <div className="p-4 border-t border-gray-200">
+      <div className='p-4 border-t border-gray-200'>
         {isMobile && (
-          <div className="mb-3">
+          <div className='mb-3'>
             <ConnectWallet />
           </div>
         )}
         <Button
-          variant={currentView === "profile" ? "default" : "outline"}
-          size="sm"
-          onClick={() => setCurrentView("profile")}
-          className="w-full flex items-center gap-2"
+          variant={currentView === 'profile' ? 'default' : 'outline'}
+          size='sm'
+          onClick={() => setCurrentView('profile')}
+          className='w-full flex items-center gap-2'
         >
-          <Settings className="h-4 w-4" />
+          <Settings className='h-4 w-4' />
           个人设置
         </Button>
       </div>
@@ -95,12 +281,14 @@ export function ChatApp() {
   )
 
   const main = (
-    <div className="flex-1 flex items-center justify-center bg-gray-50">
-      <div className="text-center text-gray-500 px-4">
-        <MessageCircle className="h-16 w-16 mx-auto mb-4 text-gray-300" />
-        <h3 className="text-lg font-medium mb-2">选择一个好友开始聊天</h3>
-        <p className="text-sm">从好友列表中选择一个好友开始对话</p>
-        <p className="text-xs mt-2 text-gray-400">支持发送图片和视频，存储在IPFS</p>
+    <div className='flex-1 flex items-center justify-center bg-gray-50'>
+      <div className='text-center text-gray-500 px-4'>
+        <MessageCircle className='h-16 w-16 mx-auto mb-4 text-gray-300' />
+        <h3 className='text-lg font-medium mb-2'>选择一个好友开始聊天</h3>
+        <p className='text-sm'>从好友列表中选择一个好友开始对话</p>
+        <p className='text-xs mt-2 text-gray-400'>
+          支持发送图片和视频，存储在IPFS
+        </p>
       </div>
     </div>
   )
