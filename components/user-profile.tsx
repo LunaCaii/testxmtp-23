@@ -61,7 +61,7 @@ export function UserProfile() {
       <div className="text-xs text-gray-500 space-y-1">
         <p>• 这是一个去中心化的聊天应用</p>
         <p>• 您的个人资料存储在区块链上</p>
-        <p>• 消息暂时存储在本地浏览器中</p>
+        <p>• 消息通过XMTP支持</p>
       </div>
     </div>
   )

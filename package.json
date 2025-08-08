@@ -42,7 +42,7 @@
     "@wagmi/connectors": "latest",
     "@wagmi/core": "latest",
     "@web3modal/wagmi": "latest",
-    "@xmtp/browser-sdk": "latest",
+    "@xmtp/browser-sdk": "4.0.2",
     "@xmtp/content-type-reaction": "latest",
     "@xmtp/content-type-read-receipt": "latest",
     "@xmtp/content-type-remote-attachment": "latest",

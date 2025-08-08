@@ -6,13 +6,12 @@ import { ChatApp } from "@/components/chat-app"
 import { UserRegistration } from "@/components/user-registration"
 import { useUserProfile } from "@/hooks/use-user-profile"
 import { BSCTestnetGuide } from "@/components/bsc-testnet-guide"
-import { useNetworkCheck } from "@/hooks/use-network-check"
+import pkg from "@xmtp/browser-sdk/package.json";
 import { useConnectXmtp } from "@/hooks/useConnectXmtp" // 导入 XMTP 连接 hook
 
 export default function Home() {
   const { address, isConnected } = useAccount()
   const { profile, isLoading: isLoadingProfile } = useUserProfile(address)
-  const { isCorrectNetwork } = useNetworkCheck()
   const { client: xmtpClient, loading: xmtpLoading, connect: connectXmtp } = useConnectXmtp() // 使用 XMTP 连接 hook
 
   // 如果钱包未连接
@@ -80,3 +79,5 @@ export default function Home() {
     </div>
   )
 }
+
+console.log("[xmtp.chat] XMTP Browser SDK version:", pkg.version);

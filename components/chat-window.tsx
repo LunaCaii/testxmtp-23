@@ -28,10 +28,14 @@ interface ChatWindowProps {
   // friendAddress: string
   messages: DecodedMessage[] // 从 useConversation 传入的消息
   loadingMessages: boolean // 从 useConversation 传入的加载状态
-  send: (
-    content: string | MediaContent,
-    contentType?: ContentTypeId
-  ) => Promise<void> // From useConversation
+  getMessages: any
+  streamMessages: any
+  send: any
+  xmtpClient: any
+  // send: (
+  //   content: string | MediaContent,
+  //   contentType?: ContentTypeId
+  // ) => Promise<void> // From useConversation
   sending: boolean // From useConversation
   myAddress: `0x${string}` | undefined // My address
   friendProfile: UserProfileType | null // Friend profile
@@ -39,6 +43,8 @@ interface ChatWindowProps {
 
 export function ChatWindow({
   conversation,
+  getMessages,
+  streamMessages,
   // friendAddress,
   messages,
   loadingMessages,
@@ -46,6 +52,7 @@ export function ChatWindow({
   sending,
   myAddress,
   friendProfile,
+  xmtpClient,
 }: ChatWindowProps) {
   const isMobile = useMobile()
   const [newMessage, setNewMessage] = useState('')
@@ -62,6 +69,24 @@ export function ChatWindow({
   useEffect(() => {
     scrollToBottom()
   }, [messages])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      // 获取消息
+      await getMessages({}, true)
+
+      // 启动消息流
+      await streamMessages()
+
+      // // 清理函数
+      // return () => {
+      //   streamMessagesReturn()
+      // }
+    }
+
+    // 调用异步函数
+    fetchData()
+  }, [])
 
   const handleSendMessage = async () => {
     if (!newMessage.trim() || !myAddress) return
@@ -111,7 +136,7 @@ export function ChatWindow({
       <div className='bg-white border-b border-gray-200 p-4'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center space-x-3'>
-            <div className='relative'>
+            {/* <div className='relative'>
               <Avatar className={`${isMobile ? 'h-8 w-8' : 'h-10 w-10'}`}>
                 <AvatarImage
                   src={friendProfile?.avatarUrl || '/placeholder.svg'}
@@ -123,20 +148,21 @@ export function ChatWindow({
               {isOnline && (
                 <Circle className='absolute -bottom-1 -right-1 h-3 w-3 fill-green-500 text-green-500' />
               )}
-            </div>
+            </div> */}
             <div>
               <h2
                 className={`font-medium text-gray-900 ${
                   isMobile ? 'text-sm' : ''
                 }`}
               >
-                {friendProfile?.nickname || '未知用户'}
+                会话ID: {conversation.id}
+                {/* {friendProfile?.nickname || '未知用户'} */}
               </h2>
-              <p
+              {/* <p
                 className={`text-gray-500 ${isMobile ? 'text-xs' : 'text-sm'}`}
               >
-                ~{/* {friendAddress.slice(0, 6)}...{friendAddress.slice(-4)} */}
-              </p>
+                {friendAddress.slice(0, 6)}...{friendAddress.slice(-4)}
+              </p> */}
             </div>
           </div>
 
@@ -167,27 +193,35 @@ export function ChatWindow({
           </div>
         ) : (
           messages.map((message) => {
-            const isOwnMessage = message.senderAddress === myAddress
-            const messageContent = message.content // XMTP SDK automatically decodes content
+            // 使用 senderInboxId 和 xmtpClient.inboxId 判断消息的发送者
+            const isOwnMessage = message.senderInboxId === xmtpClient.inboxId
+            const messageContent = message.content
 
             let displayContent: React.ReactNode
-            if (message.contentType.sameAs(getContentTypeMedia())) {
-              // Call function to get instance
-              const media = messageContent as MediaContent
-              displayContent = (
-                <MediaMessage
-                  url={media.url}
-                  name={media.name}
-                  type={media.mimeType}
-                  size={media.size}
-                  isOwn={isOwnMessage}
-                />
-              )
-            } else {
-              displayContent = (
-                <p className='text-sm'>{String(messageContent)}</p>
-              )
-            }
+            // if (message.contentType.sameAs(getContentTypeMedia())) {
+            //   // 如果是媒体消息
+            //   const media = messageContent as MediaContent
+            //   displayContent = (
+            //     <MediaMessage
+            //       url={media.url}
+            //       name={media.name}
+            //       type={media.mimeType}
+            //       size={media.size}
+            //       isOwn={isOwnMessage}
+            //     />
+            //   )
+            // } else {
+            //   // 如果是文本消息
+            //   displayContent = (
+            //     <p className='text-sm'>{String(messageContent)}</p>
+            //   )
+            // }
+            displayContent = <p className='text-sm'>{String(messageContent)}</p>
+
+            // 格式化发送时间
+            const messageTime = new Date(
+              Number(message.sentAtNs.toString().slice(0, -6))
+            ).toLocaleTimeString()
 
             return (
               <div
@@ -225,7 +259,7 @@ export function ChatWindow({
                         isOwnMessage ? 'text-blue-100' : 'text-gray-500'
                       }`}
                     >
-                      {new Date(message.sent).toLocaleTimeString()}
+                      {messageTime}
                     </p>
                   </div>
                   {isOwnMessage && (
@@ -286,7 +320,7 @@ export function ChatWindow({
         </div>
         <div className='flex items-center justify-between mt-2'>
           <p className={`text-gray-500 ${isMobile ? 'text-xs' : 'text-xs'}`}>
-            消息通过XMTP实时同步，文件存储在IPFS
+            消息通过XMTP实时同步
           </p>
           {isOnline && <p className='text-xs text-green-600'>XMTP 可用</p>}
         </div>

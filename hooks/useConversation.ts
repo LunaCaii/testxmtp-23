@@ -66,23 +66,33 @@ export const useConversation = (conversation?: Conversation<ContentTypes>) => {
   };
 
   const streamMessages = async () => {
-    const noop = () => {};
+    const noop = () => { };
     if (!client) {
       return noop;
     }
 
     const onValue = (message: DecodedMessage<ContentTypes>) => {
-      setMessages((prev) => [...prev, message]);
+      setMessages((prev) => {
+        const allMessages = [...prev, message];
+        const uniqueMessages = Array.from(
+          new Map(allMessages.map((m) => [m.id, m])).values()
+        );
+        return uniqueMessages;
+      });
+      // setMessages((prev) => [...prev, message]);
     };
 
     const stream = await conversation?.stream({
       onValue,
+      onError: (error) => {
+        console.error(error, '刘小溪报错');
+      }
     });
 
     return stream
       ? () => {
-          void stream.end();
-        }
+        void stream.end();
+      }
       : noop;
   };
 

@@ -2668,15 +2668,15 @@
     "@web3modal/polyfills" "5.1.11"
     zod "3.22.4"
 
-"@xmtp/browser-sdk@latest":
-  version "4.0.1"
-  resolved "https://registry.npmjs.org/@xmtp/browser-sdk/-/browser-sdk-4.0.1.tgz#a0f06f7497278ee54eec5a64bbcbd34acb917756"
-  integrity sha512-LA79v5AX3z86MnVlRXvrvALXWggYY0Ru2wzJHdsaKyKwpm0P9knXS0z2tos1RgGk41IkZWwL6oC0Q79a2qyb9w==
+"@xmtp/browser-sdk@4.0.2":
+  version "4.0.2"
+  resolved "https://registry.npmjs.org/@xmtp/browser-sdk/-/browser-sdk-4.0.2.tgz#0559422a917313c1324a263bd6e12c8fa428acd2"
+  integrity sha512-yIwDaP58KEOBflO2aUwJ3c0uExnkAUAoL+bFAU0y4m820eHhyDHWTn7TRbTpEaEvw764vP6d0kKb9sP+WnevNg==
   dependencies:
     "@xmtp/content-type-group-updated" "^2.0.2"
     "@xmtp/content-type-primitives" "^2.0.2"
     "@xmtp/content-type-text" "^2.0.2"
-    "@xmtp/wasm-bindings" "1.3.5"
+    "@xmtp/wasm-bindings" "1.3.6"
     uuid "^11.1.0"
 
 "@xmtp/content-type-group-updated@^2.0.2":
@@ -2756,10 +2756,10 @@
     rxjs "^7.8.0"
     undici "^5.8.1"
 
-"@xmtp/wasm-bindings@1.3.5":
-  version "1.3.5"
-  resolved "https://registry.npmjs.org/@xmtp/wasm-bindings/-/wasm-bindings-1.3.5.tgz#c3ae987dcf7e52fdecba466da5c7e76e146b454e"
-  integrity sha512-gHBxXNJOH+VbNksuMVSvh18gW3ssjn4LkfzUhI/mo0psDBBh0+xjiOeajWwhIgJz6B2jK/FOXSfMthDMHwrMQg==
+"@xmtp/wasm-bindings@1.3.6":
+  version "1.3.6"
+  resolved "https://registry.npmjs.org/@xmtp/wasm-bindings/-/wasm-bindings-1.3.6.tgz#94fa0e3ad3556a52ab96794e1bfa187bd317833e"
+  integrity sha512-jQpYfPxOm6Rgh+9GIGE78rMMDoSmgpZY6aVMnduuoZPKj0OAkD0FSreKEH3EhFhR65gi5KSVfPbDDQBg86FrvQ==
 
 abitype@1.0.8, abitype@^1.0.6, abitype@^1.0.8:
   version "1.0.8"

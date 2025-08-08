@@ -3,13 +3,13 @@
 
 import { PinataSDK } from "pinata"
 
-// 确保 PINATA_JWT 环境变量在服务器端可用
-if (!process.env.PINATA_JWT) {
-  throw new Error("PINATA_JWT 环境变量未设置。请在 Vercel 或 .env.local 中配置。")
+// 确保 NEXT_PUBLIC_PINATA_JWT 环境变量在服务器端可用
+if (!process.env.NEXT_PUBLIC_PINATA_JWT) {
+  throw new Error("NEXT_PUBLIC_PINATA_JWT 环境变量未设置。请在 Vercel 或 .env.local 中配置。")
 }
 
 export const pinata = new PinataSDK({
-  pinataJwt: process.env.PINATA_JWT,
+  pinataJwt: process.env.NEXT_PUBLIC_PINATA_JWT,
   // 您可以根据需要配置 Pinata Gateway，例如：
   // pinataGateway: "your-custom-gateway.mypinata.cloud", // 如果您有自定义网关
 })
